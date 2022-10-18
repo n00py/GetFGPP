@@ -41,11 +41,11 @@ def main():
             print("Policy Name: " + str(entry['name']))
             if str(entry['description']) != "[]":
                 print("Description: " + str(entry['description']))
-            print("Lockout Threshold: " + str(entry['msds-lockoutthreshold']))
             print("Policy Applies to: " + str(entry['msds-psoappliesto']))
             print("Minimum Password Length: " + str(entry['msds-minimumpasswordlength']))
             print("Observation Window: " + clock(int(str(entry['msds-lockoutobservationwindow']))))
             print("Lockout Duration: " + clock(int(str(entry['msds-lockoutduration']))))
+            print("Lockout Threshold: " + str(entry['msds-lockoutthreshold']))
             print("Precedence: " + str(entry['msds-passwordsettingsprecedence']))
             print("Complexity Enabled: " + str(entry['msds-passwordcomplexityenabled']))
             print("Reversible Encryption: " + str(entry['msds-passwordreversibleencryptionenabled']))
