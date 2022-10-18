@@ -24,3 +24,5 @@ Precedence: 2
 Complexity Enabled: True
 Reversible Encryption: False
 ```
+
+You must have have read access to the FGPP c=Container and FGPP Objects to enumerate this. By default, only admins have this right.
