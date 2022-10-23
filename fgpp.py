@@ -2,7 +2,9 @@
 from ldap3 import ALL, Server, Connection, NTLM, extend, SUBTREE
 import argparse
 import time
-from datetime import datetime
+from dateutil.relativedelta import relativedelta as rd
+
+
 
 parser = argparse.ArgumentParser(description='Dump Fine Grained Password Polices')
 parser.add_argument('-u', '--username', help='username for LDAP', required=True)
@@ -19,10 +21,9 @@ def base_creator(domain):
     return search_base[:-1]
 
 def clock(nano):
-    seconds = abs(nano/10000000)
-    ty_res = time.gmtime(seconds)
-    res = time.strftime("%H:%M:%S",ty_res)
-    return res
+    fmt = '{0.days} days {0.hours} hours {0.minutes} minutes {0.seconds} seconds'
+    sec = int(abs(nano/10000000))
+    return fmt.format(rd(seconds=sec))
 
 def main():
     args = parser.parse_args()
@@ -48,21 +49,23 @@ def main():
                 c.search(search_base=base_creator(args.domain), search_filter='(objectclass=msDS-PasswordSettings)',
                          attributes=['name', 'msds-lockoutthreshold', 'msds-psoappliesto', 'msds-minimumpasswordlength',
                                      'msds-passwordhistorylength', 'msds-lockoutobservationwindow', 'msds-lockoutduration',
-                                     'msds-passwordsettingsprecedence', 'msds-passwordcomplexityenabled',
-                                     'msds-passwordreversibleencryptionenabled', 'Description'])
+                                     'msds-passwordsettingsprecedence', 'msds-passwordcomplexityenabled', 'Description',
+                                     'msds-passwordreversibleencryptionenabled','msds-minimumpasswordage','msds-maximumpasswordage'])
                 if str(c.entries) != "[]":
                         for entry in c.entries:
                             print("Policy Name: " + str(entry['name']))
                             if str(entry['description']) != "[]":
                                 print("Description: " + str(entry['description']))
-                            print("Lockout Threshold: " + str(entry['msds-lockoutthreshold']))
                             print("Policy Applies to: " + str(entry['msds-psoappliesto']))
                             print("Minimum Password Length: " + str(entry['msds-minimumpasswordlength']))
+                            print("Lockout Threshold: " + str(entry['msds-lockoutthreshold']))
                             print("Observation Window: " + clock(int(str(entry['msds-lockoutobservationwindow']))))
                             print("Lockout Duration: " + clock(int(str(entry['msds-lockoutduration']))))
-                            print("Precedence: " + str(entry['msds-passwordsettingsprecedence']))
                             print("Complexity Enabled: " + str(entry['msds-passwordcomplexityenabled']))
+                            print("Minimum Password Age " + clock(int(str(entry['msds-minimumpasswordage']))))
+                            print("Maximum Password Age: " + clock(int(str(entry['msds-maximumpasswordage']))))
                             print("Reversible Encryption: " + str(entry['msds-passwordreversibleencryptionenabled']))
+                            print("Precedence: " + str(entry['msds-passwordsettingsprecedence']))
                             print("")
                 else:
                         print("Could not enumerate details, you likely do not have the privileges to do so!")
