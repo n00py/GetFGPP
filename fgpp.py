@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 from ldap3 import ALL, Server, Connection, NTLM, extend, SUBTREE
+from dateutil.relativedelta import relativedelta as rd
 import argparse
 import time
-from dateutil.relativedelta import relativedelta as rd
-
-
 
 parser = argparse.ArgumentParser(description='Dump Fine Grained Password Polices')
 parser.add_argument('-u', '--username', help='username for LDAP', required=True)
@@ -56,7 +54,8 @@ def main():
                             print("Policy Name: " + str(entry['name']))
                             if str(entry['description']) != "[]":
                                 print("Description: " + str(entry['description']))
-                            print("Policy Applies to: " + str(entry['msds-psoappliesto']))
+                            for group in entry['msds-psoappliesto']:
+                                print("Policy Applies to: " + str(group))
                             print("Minimum Password Length: " + str(entry['msds-minimumpasswordlength']))
                             print("Lockout Threshold: " + str(entry['msds-lockoutthreshold']))
                             print("Observation Window: " + clock(int(str(entry['msds-lockoutobservationwindow']))))
