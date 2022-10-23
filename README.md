@@ -1,5 +1,8 @@
 # GetFGPP
-Get Fine Grained Password Policy
+
+## Get Fine Grained Password Policy
+
+Required: **pip3 install python-dateutil**
 
 ```
 python3 fgpp.py -u Administrator -p Password -d n00py.local
@@ -20,27 +23,32 @@ Attempting to enumerate details...
 
 Policy Name: DU Policy
 Description: This Policy Applies to Domain Users
-Lockout Threshold: 100
 Policy Applies to: CN=Domain Users,CN=Users,DC=n00py,DC=local
 Minimum Password Length: 6
-Observation Window: 00:30:00
-Lockout Duration: 00:30:00
-Precedence: 1
+Lockout Threshold: 100
+Observation Window: 0 days 0 hours 30 minutes 0 seconds
+Lockout Duration: 0 days 0 hours 30 minutes 0 seconds
 Complexity Enabled: False
+Minimum Password Age 1 days 0 hours 0 minutes 0 seconds
+Maximum Password Age: 42 days 0 hours 0 minutes 0 seconds
 Reversible Encryption: True
+Precedence: 1
 
 Policy Name: DA Policy
 Description: This policy applied to Domain Admins
-Lockout Threshold: 3
 Policy Applies to: CN=Domain Admins,CN=Users,DC=n00py,DC=local
 Minimum Password Length: 14
-Observation Window: 00:30:00
-Lockout Duration: 10:00:00
-Precedence: 2
+Lockout Threshold: 3
+Observation Window: 0 days 0 hours 30 minutes 0 seconds
+Lockout Duration: 10675199 days 2 hours 48 minutes 5 seconds
 Complexity Enabled: True
+Minimum Password Age 1 days 0 hours 0 minutes 0 seconds
+Maximum Password Age: 42 days 0 hours 0 minutes 0 seconds
 Reversible Encryption: False
+Precedence: 2
 
-                                                                                                                                           python3 fgpp.py -u lowpriv -p Password -d n00py.local      
+                                                                                                                                                                                          
+python3 fgpp.py -u lowpriv -p Password -d n00py.local      
 Attmepting to connect...
 
 Searching for Policy objects...
@@ -57,10 +65,6 @@ Applied Policy: CN=DU Policy,CN=Password Settings Container,CN=System,DC=n00py,D
 Attempting to enumerate details...
 
 Could not enumerate details, you likely do not have the privileges to do so!
-
-
 ```
 
 You must have have read access to the FGPP Container and FGPP Objects to enumerate this. By default, only admins have this right.
-
-Known bug: The timestamps roll over if it exceeds 24 hours.  Need a better way to convert Windows timestamps to human readable format. The value returned is an integer that represents 100 nanoseconds. 
