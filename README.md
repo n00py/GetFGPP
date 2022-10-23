@@ -62,3 +62,5 @@ Could not enumerate details, you likely do not have the privileges to do so!
 ```
 
 You must have have read access to the FGPP Container and FGPP Objects to enumerate this. By default, only admins have this right.
+
+Known bug: The timestamps roll over if it exceeds 24 hours.  Need a better way to convert Windows timestamps to human readable format. The value returned is an integer that represents 100 nanoseconds. 
