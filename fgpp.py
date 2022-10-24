@@ -29,10 +29,10 @@ def main():
         s = Server(args.ldapserver, get_info=ALL)
     else:
         s = Server(args.domain, get_info=ALL)
-    print("Attmepting to connect...\n")
+    print("Attempting to connect...\n")
     c = Connection(s, user=args.domain + "\\" + args.username, password=args.password, authentication=NTLM,
                    auto_bind=True)
-    print("Searching for Policy objects...")
+    print("Searching for Policy Objects...")
     c.search(search_base='CN=Password Settings Container,CN=System,'+ base_creator(args.domain), search_filter='(objectclass=*)')
     if len(c.entries) > 1:
             print(str(len(c.entries) - 1) + " FGPP Objects found! \n\nAttempting to Enumerate objects with an applied policy...\n")
@@ -54,8 +54,7 @@ def main():
                             print("Policy Name: " + str(entry['name']))
                             if str(entry['description']) != "[]":
                                 print("Description: " + str(entry['description']))
-                            for group in entry['msds-psoappliesto']:
-                                print("Policy Applies to: " + str(group))
+                            
                             print("Minimum Password Length: " + str(entry['msds-minimumpasswordlength']))
                             print("Lockout Threshold: " + str(entry['msds-lockoutthreshold']))
                             print("Observation Window: " + clock(int(str(entry['msds-lockoutobservationwindow']))))
@@ -64,14 +63,16 @@ def main():
                             print("Minimum Password Age " + clock(int(str(entry['msds-minimumpasswordage']))))
                             print("Maximum Password Age: " + clock(int(str(entry['msds-maximumpasswordage']))))
                             print("Reversible Encryption: " + str(entry['msds-passwordreversibleencryptionenabled']))
-                            print("Precedence: " + str(entry['msds-passwordsettingsprecedence']))
+                            print("Precedence: " + str(entry['msds-passwordsettingsprecedence']) + " (Lower is Higher Priority)")
+                            for dn in entry['msds-psoappliesto']:
+                                print("Policy Applies to: " + str(dn))
                             print("")
                 else:
                         print("Could not enumerate details, you likely do not have the privileges to do so!")
             except Exception as ex:
                 print(ex)
     else:
-        print("No Fine Grained Password Polcies found!")
+        print("No Fine Grained Password Policies found!")
 
 if __name__ == "__main__":
     main()
