@@ -53,6 +53,7 @@ def main():
                         if str(entry['description']) != "[]":
                             print("Description: " + str(entry['description']))
                         print("Minimum Password Length: " + str(entry['msds-minimumpasswordlength']))
+                        print("Minimum Password History Length: " + str(entry['msds-passwordhistorylength']))
                         print("Lockout Threshold: " + str(entry['msds-lockoutthreshold']))
                         print("Observation Window: " + clock(int(str(entry['msds-lockoutobservationwindow']))))
                         print("Lockout Duration: " + clock(int(str(entry['msds-lockoutduration']))))
